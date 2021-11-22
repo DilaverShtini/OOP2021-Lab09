@@ -41,7 +41,35 @@ public class ConcurrentGUI {
         frame.setVisible(true);
         
         final Agent agent = new Agent();
-        new Thread(agent).start();        
+        new Thread(agent).start();
+            
+        up.addActionListener(new ActionListener() {
+            /**
+             * event handler associated to action event on button up.
+             * 
+             * @param e
+             *            the action event that will be handled by this listener
+             */
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                agent.incCounting();
+            }
+            
+        });
+        
+        down.addActionListener(new ActionListener() {
+            /**
+             * event handler associated to action event on button down.
+             * 
+             * @param e
+             *            the action event that will be handled by this listener
+             */
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                agent.decCounting();
+            }
+            
+        });
         
         stop.addActionListener(new ActionListener() {
             /**
@@ -67,6 +95,7 @@ public class ConcurrentGUI {
     private class Agent implements Runnable {
         
         private volatile boolean stop;
+        private volatile boolean flag;
 
         @Override
         public void run() {
@@ -78,7 +107,6 @@ public class ConcurrentGUI {
                             ConcurrentGUI.this.display.setText(Integer.toString(count));
                         }
                     });
-                    
                     Thread.sleep(100);
                 } catch (InvocationTargetException | InterruptedException ex) {
                     ex.printStackTrace();
@@ -91,6 +119,20 @@ public class ConcurrentGUI {
          */
         public void stopCounting() {
             this.stop = true;
+        }
+        
+        /**
+         * External command to increment the counting
+         */
+        public void incCounting() {
+            this.flag = false;
+        }
+        
+        /**
+         * External command to decrement the counting
+         */
+        public void decCounting() {
+            this.flag = true;
         }
         
     }
