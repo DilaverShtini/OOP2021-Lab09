@@ -107,6 +107,11 @@ public class ConcurrentGUI {
                             ConcurrentGUI.this.display.setText(Integer.toString(count));
                         }
                     });
+                    if(!flag) {
+                        count++;
+                    }else {
+                        count--;
+                    }
                     Thread.sleep(100);
                 } catch (InvocationTargetException | InterruptedException ex) {
                     ex.printStackTrace();
