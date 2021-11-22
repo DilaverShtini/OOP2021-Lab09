@@ -91,11 +91,13 @@ public class AnotherConcurrentGUI {
         
         private volatile boolean stop1;
         private volatile boolean flag;
-        
+        private volatile int tmp = 0;
+
         @Override
         public void run() {
             while (!this.stop1) {
                 try {
+                    check();
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
                         public void run() {
@@ -132,6 +134,18 @@ public class AnotherConcurrentGUI {
          */
         public void decCounting() {
             this.flag = true;
+        }
+         /**
+          * check if 10 seconds have passed, if yes disable all the buttons and stop the count
+          */
+        public void check() {
+            if(tmp==10) {
+                up.setEnabled(false);
+                down.setEnabled(false);
+                stop.setEnabled(false);
+                this.stopCounting();
+            }
+            tmp++;
         }
     }
     
